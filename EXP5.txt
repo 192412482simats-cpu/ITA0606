@@ -1,0 +1,57 @@
+T.SRAVAN KUMAR (192412482)
+EXPERIMENT 5
+PROGRAM CODE 
+
+import pandas as pd
+
+# Upload CSV file
+uploaded = files.upload()
+
+# Get the uploaded file name automatically
+filename = list(uploaded.keys())[0]
+
+# Read the CSV file
+data = pd.read_csv(filename)
+
+# Display the dataset
+print("Dataset:")
+print(data)
+
+# Display first 5 rows
+print("\nFirst 5 rows:")
+print(data.head())
+
+# Check missing values
+print("\nMissing Values:")
+print(data.isnull().sum())
+
+OUTPUT
+ 
+     
+   Dataset:
+   Height  Weight  Age   Class
+0     150      50   20   Short
+1     160      55   22   Short
+2     165      60   25  Medium
+3     170      65   28  Medium
+4     175      70   30    Tall
+5     180      75   32    Tall
+6     155      52   21   Short
+7     168      63   27  Medium
+8     178      72   31    Tall
+9     162      58   24  Medium
+
+First 5 rows:
+   Height  Weight  Age   Class
+0     150      50   20   Short
+1     160      55   22   Short
+2     165      60   25  Medium
+3     170      65   28  Medium
+4     175      70   30    Tall
+
+Missing Values:
+Height    0
+Weight    0
+Age       0
+Class     0
+dtype: int64
