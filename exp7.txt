@@ -1,0 +1,64 @@
+T.SRAVAN KUMAR (192412482)
+EXPERIMENT 7
+PROGRAM CODE 
+
+import pandas as pd
+
+# Upload CSV file
+uploaded = files.upload()
+
+# Read the uploaded file
+filename = list(uploaded.keys())[0]
+data = pd.read_csv(filename)
+
+# Display the dataset
+print("Dataset:")
+print(data)
+
+# Display first 5 rows
+print("\nFirst 5 rows:")
+print(data.head())
+
+# Check missing values
+print("\nMissing values:")
+print(data.isnull().sum())
+
+OUTPUT
+
+Dataset:
+    age  income  credit_score  target
+0    22   22000           580       0
+1    25   28000           610       0
+2    28   35000           640       0
+3    30   42000           670       1
+4    32   48000           690       1
+5    35   55000           710       1
+6    38   62000           730       1
+7    40   68000           750       1
+8    42   72000           770       1
+9    45   80000           800       1
+10   23   25000           590       0
+11   27   33000           630       0
+12   31   45000           680       1
+13   34   50000           700       1
+14   37   59000           720       1
+15   41   65000           740       1
+16   44   75000           790       1
+17   48   90000           820       1
+18   26   30000           620       0
+19   33   47000           695       1
+
+First 5 rows:
+   age  income  credit_score  target
+0   22   22000           580       0
+1   25   28000           610       0
+2   28   35000           640       0
+3   30   42000           670       1
+4   32   48000           690       1
+
+Missing values:
+age             0
+income          0
+credit_score    0
+target          0
+dtype: int64
