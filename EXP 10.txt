@@ -1,0 +1,70 @@
+T.SRAVAN KUMAR (192412482)
+EXPERIMENT 10
+
+PROGRAM CODE 
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.mixture import GaussianMixture
+
+# Generate sample data
+np.random.seed(42)
+
+data1 = np.random.normal(5, 1, 50)
+data2 = np.random.normal(10, 1, 50)
+
+X = np.concatenate([data1, data2]).reshape(-1, 1)
+
+# Create EM model
+em_model = GaussianMixture(
+    n_components=2,
+    random_state=42
+)
+
+# Fit the model
+em_model.fit(X)
+
+# Predict clusters
+labels = em_model.predict(X)
+
+# Display results
+print("Means of the Gaussian distributions:")
+print(em_model.means_)
+
+print("\nVariances:")
+print(em_model.covariances_)
+
+print("\nCluster Labels:")
+print(labels)
+
+print("\nLog Likelihood:")
+print(em_model.score(X))
+
+# Plot the clusters
+plt.scatter(X, np.zeros_like(X), c=labels)
+
+plt.xlabel("Data Values")
+plt.title("Expectation-Maximization Algorithm")
+plt.show()
+
+
+OUTPUT
+ Means of the Gaussian distributions:
+[[ 4.82923197]
+ [10.07183358]]
+
+Variances:
+[[[0.98222963]]
+
+ [[0.62311922]]]
+
+Cluster Labels:
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+
+Log Likelihood:
+-1.9839756604904355
+
+
+
+
