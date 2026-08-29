@@ -1,0 +1,57 @@
+T.SRAVAN KUMAR (192412482)
+EXPERIMENT 8
+PROGRAM CODE 
+
+import pandas as pd
+
+# Upload CSV file
+uploaded = files.upload()
+
+# Read the uploaded file
+filename = list(uploaded.keys())[0]
+data = pd.read_csv(filename)
+
+# Display the dataset
+print("Dataset:")
+print(data)
+
+# Display first 5 rows
+print("\nFirst 5 rows:")
+print(data.head())
+
+# Check missing values
+print("\nMissing values:")
+print(data.isnull().sum())
+
+OUTPUT
+
+Dataset:
+    hours  marks
+0       1     12
+1       2     18
+2       3     27
+3       4     38
+4       5     52
+5       6     68
+6       7     87
+7       8    108
+8       9    132
+9      10    158
+10     11    187
+11     12    218
+12     13    252
+13     14    288
+14     15    327
+
+First 5 rows:
+   hours  marks
+0      1     12
+1      2     18
+2      3     27
+3      4     38
+4      5     52
+
+Missing Values:
+hours    0
+marks    0
+dtype: int64
