@@ -1,0 +1,91 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE 
+
+import pandas as pd
+from google.colab import files
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Upload file
+uploaded = files.upload()
+
+# Read file
+data = pd.read_csv("13_car_price_prediction.csv")
+
+print("First 5 rows:")
+print(data.head())
+
+print("\nMissing values:")
+print(data.isnull().sum())
+
+# Convert Fuel column into numerical columns
+data = pd.get_dummies(
+    data,
+    columns=["Fuel"],
+    drop_first=True
+)
+
+# Input and output
+X = data.drop("Selling_Price", axis=1)
+y = data["Selling_Price"]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+# Create model
+model = LinearRegression()
+
+# Train
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Results
+print("\nActual Prices:")
+print(y_test.values[:10])
+
+print("\nPredicted Prices:")
+print(y_pred[:10])
+
+print("\nR2 Score:", r2_score(y_test, y_pred))
+
+print("Mean Squared Error:",
+      mean_squared_error(y_test, y_pred))
+
+
+OUTPUT
+
+
+First 5 rows:
+   Year  Present_Price  Kms_Driven  Owner    Fuel  Selling_Price
+0  2012           7.89       17852      2  Diesel           4.82
+1  2013          12.70       64704      2  Diesel           7.67
+2  2020          19.34       99921      1  Diesel          14.59
+3  2019           8.22       66323      2  Diesel           5.14
+4  2016          21.25       94921      2  Petrol          14.11
+
+Missing values:
+Year             0
+Present_Price    0
+Kms_Driven       0
+Owner            0
+Fuel             0
+Selling_Price    0
+dtype: int64
+
+Actual Prices:
+[ 6.63 17.02 11.92 13.27 16.21 15.2   8.39 15.35 10.83 15.96]
+
+Predicted Prices:
+[ 7.97174911 16.8206968  11.72811857 12.70301443 16.17883003 16.17207669
+  8.08791131 15.87474563 10.97358412 15.86679441]
+
+R2 Score: 0.9871066746611321
+Mean Squared Error: 0.3498598282990412

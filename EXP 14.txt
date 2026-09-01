@@ -1,0 +1,84 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE 
+
+import pandas as pd
+from google.colab import files
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Upload file
+uploaded = files.upload()
+
+# Read file
+data = pd.read_csv("14_house_price_prediction.csv")
+
+print("First 5 rows:")
+print(data.head())
+
+print("\nMissing values:")
+print(data.isnull().sum())
+
+# Input and output
+X = data.drop("Price_lakhs", axis=1)
+y = data["Price_lakhs"]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+# Model
+model = LinearRegression()
+
+# Train
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+print("\nActual Prices:")
+print(y_test.values[:10])
+
+print("\nPredicted Prices:")
+print(y_pred[:10])
+
+print("\nR2 Score:",
+      r2_score(y_test, y_pred))
+
+print("Mean Squared Error:",
+      mean_squared_error(y_test, y_pred))
+
+
+OUTPUT
+
+
+First 5 rows:
+   Area_sqft  Bedrooms  Bathrooms  Age_years  Parking  Price_lakhs
+0       1619         3          2          2        1        91.22
+1       3764         2          2          2        1       150.26
+2       1363         3          2         23        3        80.19
+3        723         2          1          9        3        45.03
+4       3150         2          2          9        3       140.97
+
+Missing values:
+Area_sqft      0
+Bedrooms       0
+Bathrooms      0
+Age_years      0
+Parking        0
+Price_lakhs    0
+dtype: int64
+
+Actual Prices:
+[ 66.53  99.96 103.13  52.    84.31 143.48  70.37  81.91 111.85  99.01]
+
+Predicted Prices:
+[ 58.64137318 100.67420317 108.22655551  51.57162223  83.12559745
+ 145.23710954  73.883095    86.80757615 116.61273    102.14647245]
+
+R2 Score: 0.9836311243688357
+Mean Squared Error: 22.946031575580303
