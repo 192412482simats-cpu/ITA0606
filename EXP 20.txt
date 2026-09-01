@@ -1,0 +1,70 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE
+
+import pandas as pd
+from google.colab import files
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+uploaded = files.upload()
+
+data = pd.read_csv("20_future_sales_prediction.csv")
+
+print(data.head())
+print(data.isnull().sum())
+
+X = data[["Month", "Advertising_Spend", "Price"]]
+y = data["Sales"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = LinearRegression()
+
+model.fit(X_train, y_train)
+
+pred = model.predict(X_test)
+
+print("Actual Sales:", y_test.values)
+print("Predicted Sales:", pred)
+
+print("R2 Score:", r2_score(y_test, pred))
+print("MSE:", mean_squared_error(y_test, pred))
+
+# Predict future sales
+future = pd.DataFrame({
+    "Month": [21, 22, 23],
+    "Advertising_Spend": [40, 42, 44],
+    "Price": [89, 89, 88]
+})
+
+future_pred = model.predict(future)
+
+print("Future Sales Prediction:", future_pred)
+
+OUTPUT
+Month  Advertising_Spend   Price  Sales
+0      1              23.32  100.62  46.96
+1      2              21.74  100.29  32.45
+2      3              21.44   99.50  43.79
+3      4              17.62   99.42  36.05
+4      5              18.85  100.32  54.11
+Month                0
+Advertising_Spend    0
+Price                0
+Sales                0
+dtype: int64
+Actual Sales: [152.58 177.83  54.11 200.8  109.86 197.63 232.77  59.21 160.14 304.77
+ 108.2  210.55  67.84 157.19 264.73 273.48 308.21  46.96 262.29 308.86
+ 219.48 188.51 121.03 242.19]
+Predicted Sales: [151.51370723 168.0347922   46.99751564 190.69253856 112.31026361
+ 207.70039692 227.50603995  71.54063202 155.60844719 319.42492457
+  98.13444194 207.06988643  80.15602929 139.80442001 268.23430838
+ 277.63069242 319.16475566  51.35644728 266.82240782 318.93306503
+ 222.29599815 169.19663939 119.65561921 226.34316452]
+R2 Score: 0.9855493856377783
+MSE: 94.35305011509699
+Future Sales Prediction: [127.8772825  133.76784078 140.64625844]

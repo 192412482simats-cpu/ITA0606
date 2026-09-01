@@ -1,0 +1,100 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE
+
+import pandas as pd
+from google.colab import files
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, classification_report
+
+# Upload file
+uploaded = files.upload()
+
+# Read file
+data = pd.read_csv("19_bank_loan_prediction.csv")
+
+print("First 5 rows:")
+print(data.head())
+
+print("\nMissing values:")
+print(data.isnull().sum())
+
+# Convert Loan_Status
+le = LabelEncoder()
+
+data["Loan_Status"] = le.fit_transform(
+    data["Loan_Status"]
+)
+
+# Input and output
+X = data.drop("Loan_Status", axis=1)
+y = data["Loan_Status"]
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+# Naive Bayes
+model = GaussianNB()
+
+# Train
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Result
+print("\nAccuracy:",
+      accuracy_score(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(
+    y_test,
+    y_pred,
+    target_names=le.classes_
+))
+
+print("\nPredicted Loan Status:")
+print(le.inverse_transform(y_pred[:10]))
+
+
+OUTPUT
+
+First 5 rows:
+   Age  Income  LoanAmount  CreditScore  ExistingDebt Loan_Status
+0   38   67929       35187          504         23533          No
+1   59   68025       42361          644          7171          No
+2   32   97499       14565          808         14254         Yes
+3   52   81449       10012          600         13990          No
+4   55   64274       15776          656         28256          No
+
+Missing values:
+Age             0
+Income          0
+LoanAmount      0
+CreditScore     0
+ExistingDebt    0
+Loan_Status     0
+dtype: int64
+
+Accuracy: 0.76
+
+Classification Report:
+              precision    recall  f1-score   support
+
+          No       0.79      0.65      0.71        46
+         Yes       0.74      0.85      0.79        54
+
+    accuracy                           0.76       100
+   macro avg       0.77      0.75      0.75       100
+weighted avg       0.76      0.76      0.76       100
+
+
+Predicted Loan Status:
+['Yes' 'No' 'Yes' 'No' 'No' 'Yes' 'No' 'Yes' 'No' 'Yes']

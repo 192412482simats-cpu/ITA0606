@@ -1,0 +1,95 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE
+
+import pandas as pd
+from google.colab import files
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Upload file
+uploaded = files.upload()
+
+# Read file
+data = pd.read_csv("17_mobile_price_prediction.csv")
+
+print("First 5 rows:")
+print(data.head())
+
+print("\nMissing values:")
+print(data.isnull().sum())
+
+# Input and output
+X = data.drop("Price_Range", axis=1)
+y = data["Price_Range"]
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+# Random Forest
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+# Train
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Result
+print("\nAccuracy:",
+      accuracy_score(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(
+    y_test,
+    y_pred
+))
+
+print("\nFirst 10 Predictions:")
+print(y_pred[:10])
+
+OUTPUT
+
+First 5 rows:
+   Battery_mAh  RAM_GB  Storage_GB  Camera_MP  Screen_inch  Price_Range
+0         3695       2         512         71         6.25            2
+1         5558      16         256         73         6.22            3
+2         3117      12          32        104         6.68            3
+3         4204       3         512         91         5.27            2
+4         4928       2          64         30         5.39            0
+
+Missing values:
+Battery_mAh    0
+RAM_GB         0
+Storage_GB     0
+Camera_MP      0
+Screen_inch    0
+Price_Range    0
+dtype: int64
+
+Accuracy: 0.56
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.81      0.68      0.74        25
+           1       0.45      0.60      0.52        25
+           2       0.33      0.32      0.33        25
+           3       0.73      0.64      0.68        25
+
+    accuracy                           0.56       100
+   macro avg       0.58      0.56      0.57       100
+weighted avg       0.58      0.56      0.57       100
+
+
+First 10 Predictions:
+[3 1 2 3 2 2 2 0 2 1]

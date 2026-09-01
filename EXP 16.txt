@@ -1,0 +1,122 @@
+T.SRAVAN KUMAR
+192412482
+PROGRAM CODE 
+
+import pandas as pd
+from google.colab import files
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+
+from sklearn.metrics import accuracy_score
+
+# Upload file
+uploaded = files.upload()
+
+# Read file
+data = pd.read_csv("16_classification_comparison.csv")
+
+print("First 5 rows:")
+print(data.head())
+
+print("\nMissing values:")
+print(data.isnull().sum())
+
+# Input and output
+X = data.drop("Approved", axis=1)
+y = data["Approved"]
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+# Scaling for KNN and Logistic Regression
+scaler = StandardScaler()
+
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Models
+models = {
+    "KNN": KNeighborsClassifier(n_neighbors=5),
+
+    "Logistic Regression":
+        LogisticRegression(max_iter=1000),
+
+    "Decision Tree":
+        DecisionTreeClassifier(random_state=42),
+
+    "Random Forest":
+        RandomForestClassifier(
+            n_estimators=100,
+            random_state=42
+        ),
+
+    "Naive Bayes":
+        GaussianNB()
+}
+
+print("\nAlgorithm Performance")
+print("---------------------")
+
+for name, model in models.items():
+
+    if name in ["KNN", "Logistic Regression"]:
+
+        model.fit(X_train_scaled, y_train)
+
+        prediction = model.predict(X_test_scaled)
+
+    else:
+
+        model.fit(X_train, y_train)
+
+        prediction = model.predict(X_test)
+
+    accuracy = accuracy_score(
+        y_test,
+        prediction
+    )
+
+    print(name, ":", round(accuracy * 100, 2), "%")
+
+OUTPUT
+
+First 5 rows:
+   SepalLength  SepalWidth  PetalLength  PetalWidth Species
+0     5.118956    3.479012     1.643440    0.292420  setosa
+1     4.262216    3.308890     0.736926    0.205409  setosa
+2     4.998378    3.661383     1.915672    0.230416  setosa
+3     4.824874    3.521290     1.315229    0.199791  setosa
+4     5.345148    3.260557     1.781988    0.301610  setosa
+
+Missing values:
+SepalLength    0
+SepalWidth     0
+PetalLength    0
+PetalWidth     0
+Species        0
+dtype: int64
+
+Accuracy: 1.0
+
+Classification Report:
+              precision    recall  f1-score   support
+
+      setosa       1.00      1.00      1.00        10
+  versicolor       1.00      1.00      1.00        10
+   virginica       1.00      1.00      1.00        10
+
+    accuracy                           1.00        30
+   macro avg       1.00      1.00      1.00        30
+weighted avg       1.00      1.00      1.00        30
